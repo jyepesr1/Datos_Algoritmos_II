@@ -1,0 +1,10 @@
+FindFood
+Version 2.0.0 "Final" (02/06/2015)
+Authors: Luis Miguel Mejía Suárez (201410033010)
+         Johan Sebastían Yepes Rios (201410049010)
+
+Aplicación escrita en el lenguaje de programación Java
+Busca restaurantes y los ordena por su cercania a tu ubicación actual
+
+Para compilar el programa usar el Makefile
+make o make help muestra el modo de uso del programa

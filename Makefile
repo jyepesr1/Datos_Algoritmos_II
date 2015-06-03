@@ -13,10 +13,10 @@ MANIFEST = META-INF/MANIFEST.MF#Manifest of the program
 #------------------------------------------------------------
 
 # show help message by default
-Defaulit: Help
+deafult: help
 
 # Compile, build jar and run
-all: Build Jar Run
+all: build jar run
 
 #Compile the .classes files
 build:
@@ -43,7 +43,7 @@ clean:
 	rm -rf build
 	rm -rf dist
 
-Help:
+help:
 	@echo "make build: Compile the source files into the .class files, to the directory './build/classes"
 	@echo "make jar: Generate the file 'FindFood.jar', in the directory './dist/'"
 	@echo "make run: Execute the file 'FindFood.jar'"
