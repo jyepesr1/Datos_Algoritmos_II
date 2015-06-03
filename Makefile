@@ -16,17 +16,17 @@ MANIFEST = META-INF/MANIFEST.MF#Manifest of the program
 Defaulit: Help
 
 # Compile, build jar and run
-All: Build Jar Run
+all: Build Jar Run
 
 #Compile the .classes files
-Build:
+build:
 	mkdir -p build
 	mkdir -p ${PATH_TO_CLASSES}
 	javac -cp ${CP}${PATH_TO_LIBS} -d ${PATH_TO_CLASSES} ${PATH_TO_SRC}	
 	cp -r src/Cities ${PATH_TO_CLASSES}
 
 #Generate the .jar file
-Jar:
+jar:
 	mkdir -p dist
 	mkdir -p dist/lib
 	cd build/classes/; \
@@ -34,18 +34,18 @@ Jar:
 	cp ${PATH_TO_LIBS} dist/lib
 
 #Run the jar file
-Run:
+run:
 	@echo "Ejecutando el Jar"
 	java -jar ${PATH_TO_JAR} 
 
 # Clean all the generated files and leaves only the src, META-INF  and the lib folders
-Clean: 
+clean: 
 	rm -rf build
 	rm -rf dist
 
 Help:
-	@echo "make Build: Compile the source files into the .class files, to the directory './build/classes"
-	@echo "make Jar: Generate the file 'FindFood.jar', in the directory './dist/'"
-	@echo "make Run: Execute the file 'FindFood.jar'"
-	@echo "make All: Same as 'make Build && make Jar && make Run'"
-	@echo "make Clean: Clean the project an leaves only the source files"
+	@echo "make build: Compile the source files into the .class files, to the directory './build/classes"
+	@echo "make jar: Generate the file 'FindFood.jar', in the directory './dist/'"
+	@echo "make run: Execute the file 'FindFood.jar'"
+	@echo "make all: Same as 'make Build && make Jar && make Run'"
+	@echo "make clean: Clean the project an leaves only the source files"
