@@ -14,38 +14,57 @@ public final class FindFood {
     
     //Representación abstracta de la ciudad como un grafo
     private Grafo City;
-    //Distancía entre 
+    
+    //Distancía minima entre la ubicación actual y el resto de la ciudad
     private Map<String, Integer> Proximity;
-    private final ArrayList<String[]> Result; //Result of the user search
-    private String[][] SortedResult; //Restaurants sorted by proximity
-    private DefaultTableModel Information; //All the information in one string
+    
+    //Los restaurantes en la base de datos que cumplen la busqueda del usuario
+    private final ArrayList<String[]> Result;
+    
+    //Los restaurantes encontrados ordenados por cercania
+    private String[][] SortedResult;
+    
+    //Modelo de la tabla con la información obtenida
+    private DefaultTableModel Information;
+    
+    //Conexión con la base de datos
     private Connection con;
 
+    /**
+     * @method Constructor de la clase
+     */
     public FindFood() {
+        //Inicializamos el grafo de la ciudad y la lista de restaurantes
         this.Result = new ArrayList<>();
         String cityName = "/Cities/Medellin.gph";
         createGraph(cityName);
     }
     
+    /**
+     * @param fileName Nombre del archivo con el grafo a crear
+     * @method Creamos un nuevo grafo de la ciudad deseada
+     */
     private void createGraph (final String fileName) {
-        //here we create the 'City' graph of cityName
-        Grafo temporal = new Grafo();
+        Grafo temporal = new Grafo(); //Nuevo grafo vacio
         
         try {
-            //Open The File
+            //Abrimos el archivo
             InputStream Data = FindFood.class.getResourceAsStream(fileName);
-            BufferedReader File = new BufferedReader(new InputStreamReader(Data));
+            BufferedReader File = new BufferedReader(
+                                                new InputStreamReader(Data));
             StringTokenizer st = new StringTokenizer(File.readLine());
             
-            //Read the first line of the file (Nodes)
+            //Leemos la primera linea, el nombre de todos los nodos del grafo
             while (st.hasMoreTokens()) {
+                //Agregamos al grafo cada nodo
                 temporal.agregarALista(new Nodo(st.nextToken(), 0));
             }
             
-            //Read the rest of the file (Edges)
+            //El resto del archivo contiene una rista por linea
             String Line;
             String[] Parts;
             while ((Line = File.readLine()) != null) {
+                //Creamos las aristas bidireccionales
                 Parts = Line.split(" ");
                 temporal.crearEnlace(Parts[0], Parts[1], 
                         Integer.parseInt(Parts[2]));
@@ -60,25 +79,33 @@ public final class FindFood {
         this.City = temporal;
     }
     
+    /**
+     * @param Tipo Tipo de comida buscada por el usuario
+     * @param Categoria Rango de precios que el usuario desea
+     * @method Aquí se busca en la base de datos los restaurantes
+     *         que cumplan con las restriciones del usuario
+     */
     private void getRestaurants(String Tipo, String Categoria) {
-        //Here We serach in the DB for the restaurants matching
-        getConnection();
+        getConnection(); //Establecempos la conexión con la base de datos
         
         try {
-            //Get Data
+            //Obetenmos la información de la base de datos
             Statement estado = con.createStatement();
             ResultSet resultado = estado.executeQuery("select Nombre, "
                     + "Ubicacion from restaurantes where Tipo="
                     + Tipo +" and Categoria=" + Categoria);
             
-            while (resultado.next()) {
+            //Guardamos la información
+            //Mientras hayan más resutlados hacer...
+            while (resultado.next()) {                
+                //Creamos un nuevo restaurante  y lo agragamos a la lista
                 String[] restaurant = new String[2];
-                restaurant[0] = resultado.getString(1);
-                restaurant[1] = resultado.getString(2);
+                restaurant[0] = resultado.getString(1); //Nombre
+                restaurant[1] = resultado.getString(2); //Ubicación
                 Result.add(restaurant);
             }
             
-            //Close the connection
+            //Cerramos la conexión 
             resultado.close();
             estado.close();
             con.close();
@@ -89,16 +116,17 @@ public final class FindFood {
         }
     }
     
-    private void getConnection() {
-        //Here we create a connection with the DB
-        
+    /**
+     * @method Establecer la conexión con la base de datos
+     */
+    private void getConnection() {      
         try {          
-            //Open Data Base
+            //Abrimos la base de datos
             System.out.println("Conectando con la Base de Datos");
             String driver = "com.mysql.jdbc.Driver";
             Class.forName(driver).newInstance();
             String url = "jdbc:mysql://sql5.freesqldatabase.com:3306/sql578021";
-                this.con = DriverManager.getConnection(url, "sql578021", "rL8*gG6!");
+            this.con = DriverManager.getConnection(url, "sql578021","rL8*gG6!");
             System.out.println("Conexión Exitosa");           
         } catch (SQLException | ClassNotFoundException | InstantiationException 
                 | IllegalAccessException ex ) {
@@ -109,24 +137,27 @@ public final class FindFood {
     }
   
     /**
-     *
-     * @return
+     * @method Ordenamos los restaurantes por orden de cercania (Insert sort)
      */
     private void sortResults() {
-        //Here we order the restaurants in order of proximity (Insert Sort)
+        //Convertimos la lista de restaurantes en una matriz de Strings de 2*n  
         SortedResult = new String[Result.size()][2];
         SortedResult = Result.toArray(SortedResult);
         
+        //Variables del Insert sort
         String Ubicacion, Restaurante;
         int J, Compare;
 
+        //Analizamos el arreglo desde la segunda posición hatsa el final
         for (int I = 1; I < SortedResult.length; I++) {
             Restaurante = SortedResult[I][0];
             Ubicacion = SortedResult[I][1];
             Compare = Proximity.get(Ubicacion);
             J = I-1;
             
+            //Mientras mi anterior sea mayor que el actual hacer...
             while (J >= 0 &&  Proximity.get(SortedResult[J][1]) > Compare) {
+                //Cambiamos de posición el anteior con el actual
                 SortedResult[J+1][0] = SortedResult[J][0];
                 SortedResult[J+1][1] = SortedResult[J][1];
                 J--;
@@ -136,14 +167,26 @@ public final class FindFood {
             SortedResult[J+1][1] = Ubicacion;
         }
     }
-
+    
+    /**
+     * @param Tipo Tipo de restaurante - comida solicitado por el usuario
+     * @param Categoria Margen de precios que el usuario escogio
+     * @param Ubicación Punto donde se encuentra el usuario
+     * @method Es metodo gestiona todo el funcionamiejnto del pgograma
+     */
     public void getResults (String Tipo, String Categoria, String Ubicación) {
-        //Here are all the appliaction logic
+        //Relizamos dijkstra desde el punto donde esta el usuario
         this.Proximity = City.dijkstra(Ubicación);
+        //Relizamos la busqueda de los restaurantes
         getRestaurants(Tipo, Categoria);
+        //Ordenamos los resultados
         sortResults();
     }
 
+    /***
+     * @return Modelo de una JTable con los resultados del programa
+     * @method Aquí se crea la tabla con la información del programa
+     */
     public DefaultTableModel getInformation() {
         this.Information = new DefaultTableModel();
         Information.addColumn("NAME");

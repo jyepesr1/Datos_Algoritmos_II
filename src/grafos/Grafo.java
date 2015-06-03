@@ -50,14 +50,14 @@ public class Grafo {
     
     /**
      * @method Agregamos un nodo al grafo
-     * Ingreso del nodo a la lista
-     * Ingreso del nodo al mapa
-     * Aumentamos el indice para el proxímo nodo7
-     * @param nodo
+     * @param nodo Nodo a agregar
      */
     public void agregarALista (Nodo nodo) {
+        //Ingreso del nodo a la lista
         listaNodo.add(nodo);
+        //Ingreso del nodo al mapa
         map.put((String)nodo.getDato(), counter);
+        //Aumentamos el indice para el proxímo nodo
         counter++;
     }
     
@@ -98,9 +98,10 @@ public class Grafo {
     }
     
     /**
-     * @param primero
-     * @return 
-     * @method buscamos si el nodo pertenece al grafo
+     * @param primero Nodo origen de dijkstra
+     * @return Mapa de String -> Integer 
+     * @method Dijkstra del grafo para hayar la distancia mínima
+     *         Entre el nodo Origen y los demás nodos
      */
     public Map<String, Integer> dijkstra (String primero) {
         //Preliminares de la función -------------------------------------------
@@ -202,23 +203,6 @@ public class Grafo {
         for (String key : map.keySet()) {
             //terminada la recursion imprimo los vertices recorridos
             if(destino == map.get(key)) System.out.print(key + " ");
-        }
-    }
-    
-    /**
-     * @method imprimir el grafo en forma de lista de abyacencía
-     * @param flag
-     */
-    public void imprimirLista (boolean flag) {
-        for (Nodo nodo : listaNodo) {
-            if(!"".equals((String)nodo.getDato())){
-                System.out.print((String)nodo.getDato()+"-> ");
-                if(flag){
-                    nodo.imprimirNodos();
-                }else{
-                    nodo.imprimirNodos2();
-                }
-            }
         }
     }
 }

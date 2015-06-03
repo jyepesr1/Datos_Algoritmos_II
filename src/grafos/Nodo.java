@@ -4,63 +4,74 @@ import java.util.ArrayList;
 import org.javatuples.Pair;
 
 /**
- * @class Rspresentación abstracta de los nodos
+ * @class Representación abstracta de los nodos del grafo
  */
-
-public class Nodo implements Comparable<Nodo>{
-    private Object dato;//Dato como un objeo simple, información del nodo
-    private ArrayList<Nodo> listaNodos; //Lista nodos adyacentes
-    public boolean visitado = false;//False/True nodo -> no visitado / visitado
-    Pair<String ,Integer> pair; //Tupla 
+public class Nodo implements Comparable<Nodo> {
+    //Dato como un objeo simple, información del nodo
+    private Object dato;
+    
+    //Lista nodos adyacentes
+    private ArrayList<Nodo> listaNodos;
+    
+    //False/True nodo no visitado/visitado
+    public boolean visitado = false;
+    
+    //Peso del nodo
     int peso;
 
-    public Nodo(Object dato, int peso){//metodo sobre cargado de Nodo
-        this.dato = dato;//define un puntero para dato
+    /**
+     * @param dato Infomación del nodo
+     * @param peso peso del nodo
+     * @method Construtor de un nodo
+     */
+    public Nodo (Object dato, int peso) {
+        //Metodo sobre cargado de Nodo, inicializamos los atributos de la clase
+        this.dato = dato;
         listaNodos = new ArrayList<>();
         this.peso = peso;
     }
-    public void setDato(Object dato){//los metodos getDato y setDato sirven para poder marcar al nodo con un dato (el booleano)
-        this.dato = dato;
+    
+    /**
+     * @param nodo Nodo con el que se tiene una relación
+     * @method Se agraga un nodo con el que este nodo tiene relación
+     */
+    public void setNodo (Nodo nodo) {
+        this.listaNodos.add(nodo);
     }
+    
+    /**
+     * @return Nombre del nodo
+     * @method Getter de dato
+     */
     public Object getDato(){
         return this.dato;
     }
     
-    public void setNodo(Nodo nodo){//puntero para el nodo al agragarlo
-        this.listaNodos.add(nodo);
-    }
-    
-    public ArrayList<Nodo> getHijos(){//para identificar en el arreglo quien es nodo hijo y devolverlo
+    /**
+     * @return Lista con los nodos abyacentes a este
+     * @method Getter de listaNodos
+     */
+    public ArrayList<Nodo> getHijos(){
         return listaNodos;
     }
     
-    public void imprimirNodos2(){
-        for (Nodo nodo : listaNodos){
-            if(!"".equals(nodo.getDato())){
-                System.out.print(nodo.getDato()+" ");
-            }
-        } 
-        System.out.println(); 
-    }
-    
+    /**
+     * @return Peso de este nodo
+     * @method Getter de peso
+     */
     public int getPeso(){
         return peso;
     }
-
-    public void imprimirNodos(){
-        for (Nodo nodo : listaNodos){
-            if(!"".equals(nodo.getDato())){
-                System.out.print(nodo.getDato());
-                System.out.print("("+nodo.getPeso()+")"+" ");
-            }
-        } 
-        System.out.println(); 
-    } 
      
+    /**
+     * @param nodo nodo con el cuál se compara
+     * @return identificador que usa el PriorityQueue
+     * @method Comparador para el funcionamiento del PriorityQueue
+     */
     @Override
-    public int compareTo(Nodo nodo) { //es necesario definir un comparador para el correcto funcionamiento del PriorityQueue
-       if(peso > nodo.peso) return 1;
-       if(peso == nodo.peso) return 0;
-       return -1;
+    public int compareTo(Nodo nodo) {
+        if(peso > nodo.peso) return 1;
+        if(peso == nodo.peso) return 0;
+        return -1;
     }
 }

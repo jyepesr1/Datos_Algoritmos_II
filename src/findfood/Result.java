@@ -14,8 +14,7 @@ public class Result extends javax.swing.JFrame {
     /**
      * @method Constructor de la clase
      * @param model Modelo que contiene la información de la tabla
-     */
-    
+     */    
     public Result (DefaultTableModel model) {        
         setTitle("RESULTS");
         setLayout(new BorderLayout());

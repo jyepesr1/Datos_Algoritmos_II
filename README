@@ -1,0 +1,9 @@
+FindFood
+Version 2.0.0 "Final" (02/06/2015)
+Authors: Luis Miguel Mejía Suárez (201410033010)
+         Johan Sebastían Yepes Rios (201410049010)
+		 
+Compilar:
+
+Ejecutar:
+   jar: java -cp $CLASSPATH:lib/*.jar -jar FindFood.jar 

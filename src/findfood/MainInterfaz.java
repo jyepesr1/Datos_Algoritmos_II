@@ -5,30 +5,36 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * @project FindFood; Little aplication to find near restaurants
- *                    Usign Graphs and Database
- * @version 2.0.0 (02/06/2015)
+ * @project FindFood; Aplicación buscadora de restaurantes cercanos
+ *          El projecto hace uso de grafos, dijkstra y bases de datos
+ * @version 2.0.0 "Final" (02/06/2015)
  * @author Luis Miguel Mejía Suárez (201410033010)
  * @author Johan Sebastían Yepes Rios (201410049010)
  * @profesor Alberto Antonio Restrepo; Estructuras de Datos y Algoritmos II
  * 
- * @class Main Class; the program starts here
+ * @class Clae principal, el prpgrama inicia aquí
+ *        Interfz inicial donde el usario esoge los parametros de busqueda
  */
 
 public class MainInterfaz extends JFrame implements ActionListener {
-    private final String[] tipos = {"Almuerzo", "Asados", "Café/Bar", "Desayunos", 
-                                    "Fast Food", "Internacional", "Mar", 
-                                    "Resposteria", "Típica", "Vegetariana"};
+    //Lista de tipos de comida en la base de datos
+    private final String[] tipos = {"Almuerzo", "Asados", "Café/Bar",
+                                    "Desayunos", "Fast Food", "Internacional", 
+                                    "Mar", "Resposteria", "Típica", 
+                                    "Vegetariana"};
     
+    //Lista del rango de precios que maneja la base de datos
     private final String[] precios = {"10.000 - 20.000", "20.000 - 30.000", 
                                       "30.000 - 35.000", "35.000 - 45.000",
                                       "45.000 o más"};
     
+    //Lista de las ubicaciones actuales en la base de datos
     private final String[] ublicaciones = {"Copacabana", "Bello", "Norte", 
                                            "Centro", "Sur", "Centro", "Oriente",
                                            "Occidente", "Envigado", "Itagui", 
                                            "Sabaneta"};
     
+    //Elementos de la interfaz grafica
     private JComboBox tipo;
     private JComboBox precio;
     private JComboBox ubicacion;
@@ -115,15 +121,14 @@ public class MainInterfaz extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(java.awt.event.ActionEvent evt) {                                         
-        //Metodo que se llama cuando se presiona el boton "OK"
-        //Aquí empieza la busqueda        
+        //Obtenemos las selecciones del usuario
         String userTipo = "'" + tipo.getSelectedItem().toString() + "'";
         String userCategoria = String.valueOf(precio.getSelectedIndex()+1);
         String userUbicacion = ubicacion.getSelectedItem().toString();
         
+        //Realizamos todo el procedimiento del programa
         FindFood searcher = new FindFood();
         searcher.getResults(userTipo, userCategoria, userUbicacion);
-        //Table results = new Table(searcher.getInformation());
         Result results = new Result(searcher.getInformation());
         this.setVisible(false);
         results.setVisible(true);
