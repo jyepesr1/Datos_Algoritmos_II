@@ -1,7 +1,6 @@
 package grafos;
 
 import java.util.ArrayList;
-import org.javatuples.Pair;
 
 /**
  * @class Representación abstracta de los nodos del grafo
