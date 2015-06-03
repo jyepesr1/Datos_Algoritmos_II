@@ -36,9 +36,9 @@ Jar:
 #Run the jar file
 Run:
 	@echo "Ejecutando el Jar"
-	java -cp ${CP}lib/**/*.jar -jar ${PATH_TO_JAR} 
+	java -jar ${PATH_TO_JAR} 
 
-# Clean all the generated files and leaves only the src and the lib folders
+# Clean all the generated files and leaves only the src, META-INF  and the lib folders
 Clean: 
 	rm -rf build
 	rm -rf dist

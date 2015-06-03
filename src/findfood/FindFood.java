@@ -124,12 +124,11 @@ public final class FindFood {
             //Abrimos la base de datos
             System.out.println("Conectando con la Base de Datos");
             String driver = "com.mysql.jdbc.Driver";
-            Class.forName(driver).newInstance();
+            Class.forName(driver);
             String url = "jdbc:mysql://sql5.freesqldatabase.com:3306/sql578021";
             this.con = DriverManager.getConnection(url, "sql578021","rL8*gG6!");
             System.out.println("Conexión Exitosa");           
-        } catch (SQLException | ClassNotFoundException | InstantiationException 
-                | IllegalAccessException ex ) {
+        } catch (SQLException | ClassNotFoundException ex) {
             System.err.println("Unexpected error ocurred");
             System.err.println(ex.getMessage());
             System.exit(1);
